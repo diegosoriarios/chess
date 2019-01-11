@@ -39,12 +39,18 @@ class App extends Component {
     let mesa = this.state.mesa
     switch(peca){
       case 't':
-        let linha = pos % 8;
-        let coluna = Math.floor(pos / 8);
-        let beginLine = linha * coluna;
-        let endLine = (linha * coluna) + 7
+        console.clear()
+        console.log(pos)
+        let coluna = pos % 8;
+        let linha = Math.floor(pos / 8);
+        let beginLine = linha * 8;
+        let endLine = beginLine + 7;
         let checkBegin = true;
         let checkEnd = true;
+        console.log('linha'+linha)
+        console.log('endLine'+endLine)
+        console.log('beginLine'+beginLine)
+        //checkHorizontal
         for(i = 0; i < 8; i++){
           if(pos-i >= beginLine && checkBegin){
             if(mesa[pos-i] === ' '){
@@ -61,6 +67,8 @@ class App extends Component {
               }
             }
           }
+          console.log(`Pos+i${pos+i}`)
+          console.log(endLine)
           if(pos+i <= endLine && checkEnd){
             if(mesa[pos+i] === ' '){
               mesa[pos+i] = 'x'
@@ -69,7 +77,7 @@ class App extends Component {
                 mesa[pos+i] = 'x'
                 checkEnd = false;
               }else{
-                if(mesa[pos+i] !== ' ' && mesa[pos-i] !== peca){
+                if(mesa[pos+i] !== ' ' && mesa[pos+i] !== peca){
                   console.log(i)
                   checkEnd = false;
                 }
@@ -77,23 +85,41 @@ class App extends Component {
             }
           }
         }
-        /*
-        for(i = pos + 8; i < (64); i += 8){
-          console.log(this.state.mesa)
-          if(mesa[i] === ' '){
-            mesa[i] = 'x'
-          }else{
-            if(mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
-              mesa[i] = 'x'
-              i = 64;
+        //checkVertical
+        checkBegin = true;
+        checkEnd = true;
+        for(i = 1; i <= 8; i++){
+          if(pos-(8*i) >= linha && checkBegin){
+            if(mesa[pos-(8*i)] === ' '){
+              mesa[pos-(8*i)] = 'x'
             }else{
-              if(mesa[i] !== ' '){
-                i = 64;
+              if(mesa[pos-(8*i)] === 'T' || mesa[pos-(8*i)] === 'C' || mesa[pos-(8*i)] === 'B' || mesa[pos-(8*i)] === 'Q' || mesa[pos-(8*i)] === 'K' || mesa[pos-(8*i)] === 'P'){
+                mesa[pos-(8*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(8*i)] !== ' ' && mesa[pos-(8*i)] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+          }
+          if(pos+(8*i) <= 64 && checkEnd){
+            if(mesa[pos+(8*i)] === ' '){
+              mesa[pos+(8*i)] = 'x'
+            }else{
+              if(mesa[pos+(8*i)] === 'T' || mesa[pos+(8*i)] === 'C' || mesa[pos+(8*i)] === 'B' || mesa[pos+(8*i)] === 'Q' || mesa[pos+(8*i)] === 'K' || mesa[pos+(8*i)] === 'P'){
+                mesa[pos+(8*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(8*i)] !== ' ' && mesa[pos-8*i] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
               }
             }
           }
         }
-        */
         this.setState({
           mesa,
           selected: pos
