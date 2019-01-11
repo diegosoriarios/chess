@@ -31,7 +31,6 @@ class App extends Component {
   }
 
   move = (peca, pos) => {
-    console.log(pos)
     this.setState({
       clicked: true,
     })
@@ -39,16 +38,24 @@ class App extends Component {
     switch(peca){
       case 't':
         for(var i = 0; i < (8 - pos); i++){
-          if(mesa[i] !== ' ' || mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
+          if(mesa[i] === ' ' || mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
             mesa[i] = 'x'
-            i=(8 - pos)
+            i = (8-pos)
           }
         }
-        for(i = 0; i < (64); i += 8){
-          console.log(i + 'teste' + mesa[i])
-          if(mesa[i] !== ' ' || mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
+        for(i = pos + 8; i < (64); i += 8){
+          console.log(this.state.mesa)
+          if(mesa[i] === ' '){
             mesa[i] = 'x'
-            i = 64
+          }else{
+            if(mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
+              mesa[i] = 'x'
+              i = 64;
+            }else{
+              if(mesa[i] !== ' '){
+                i = 64;
+              }
+            }
           }
         }
         this.setState({
