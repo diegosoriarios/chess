@@ -30,3 +30,20 @@
     transform: rotate(360deg);
   }
 }
+
+.grid {
+  width: 120px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.casa {
+  background-color: white;
+  border: 1px solid black;
+  width: 32px;
+  height: 32px;
+  color: grey;
+  display: block;
+  float: left;
+  line-height: 32px;
+}
