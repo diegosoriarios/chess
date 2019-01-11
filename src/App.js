@@ -13,7 +13,7 @@ class App extends Component {
         ' ',' ',' ',' ',' ',' ',' ',' ',
         ' ',' ',' ',' ',' ',' ',' ',' ',
         ' ',' ',' ',' ',' ',' ',' ',' ',
-        ' ',' ',' ',' ',' ',' ',' ',' ',
+        ' ',' ','b',' ',' ',' ',' ',' ',
         'P','P','P','P','P','P','P','P',
         'T','C','B','K','Q','B','C','T',
       ],
@@ -39,17 +39,12 @@ class App extends Component {
     let mesa = this.state.mesa
     switch(peca){
       case 't':
-        console.clear()
-        console.log(pos)
         let coluna = pos % 8;
         let linha = Math.floor(pos / 8);
         let beginLine = linha * 8;
         let endLine = beginLine + 7;
         let checkBegin = true;
         let checkEnd = true;
-        console.log('linha'+linha)
-        console.log('endLine'+endLine)
-        console.log('beginLine'+beginLine)
         //checkHorizontal
         for(i = 0; i < 8; i++){
           if(pos-i >= beginLine && checkBegin){
@@ -124,7 +119,7 @@ class App extends Component {
           mesa,
           selected: pos
         })
-        return '♜'
+        break;
       case 'c':
         if(pos % 8 === 7){
           console.log(pos % 8)
@@ -176,6 +171,92 @@ class App extends Component {
         })
         break;
       case 'b':
+        coluna = pos % 8;
+        linha = Math.floor(pos / 8);
+        beginLine = linha * 8;
+        endLine = beginLine + 7;
+        checkBegin = true;
+        checkEnd = true;
+        let counter = 0;
+        let counter2 = 0;
+        //checkHorizontal
+        console.clear()
+        for(i = 0; i < 8; i++){
+          console.log(coluna)
+          if(counter <= coluna && checkBegin){
+            if(mesa[pos-(9*i)] === ' '){
+              mesa[pos-(9*i)] = 'x'
+            }else{
+              if(mesa[pos-(9*i)] === 'T' || mesa[pos-(9*i)] === 'C' || mesa[pos-(9*i)] === 'B' || mesa[pos-(9*i)] === 'Q' || mesa[pos-(9*i)] === 'K' || mesa[pos-(9*i)] === 'P'){
+                mesa[pos-(9*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(9*i)] !== ' ' && mesa[pos-(9*i)] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+            counter++;
+          }
+          if(counter2 < (8-coluna) && checkEnd){
+            if(mesa[pos+(9*i)] === ' '){
+              mesa[pos+(9*i)] = 'x'
+            }else{
+              if(mesa[pos+(9*i)] === 'T' || mesa[pos+(9*i)] === 'C' || mesa[pos+(9*i)] === 'B' || mesa[pos+(9*i)] === 'Q' || mesa[pos+(9*i)] === 'K' || mesa[pos+(9*i)] === 'P'){
+                mesa[pos+(9*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(9*i)] !== ' ' && mesa[pos+(9*i)] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+            counter2++;
+          }
+        }
+        //checkVertical
+        checkBegin = true;
+        checkEnd = true;
+        counter = 0;
+        counter2 = 0;
+        for(i = 1; i <= 8; i++){
+          if(counter < 7-coluna && checkBegin){
+            if(mesa[pos-(7*i)] === ' '){
+              mesa[pos-(7*i)] = 'x'
+            }else{
+              if(mesa[pos-(7*i)] === 'T' || mesa[pos-(7*i)] === 'C' || mesa[pos-(7*i)] === 'B' || mesa[pos-(7*i)] === 'Q' || mesa[pos-(7*i)] === 'K' || mesa[pos-(7*i)] === 'P'){
+                mesa[pos-(7*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(7*i)] !== ' ' && mesa[pos-(7*i)] !== peca){
+                  checkBegin = false;
+                }
+              }
+            }
+            counter++;
+          }
+          if(counter2 < coluna && checkEnd){
+            if(mesa[pos+(7*i)] === ' '){
+              mesa[pos+(7*i)] = 'x'
+            }else{
+              if(mesa[pos+(7*i)] === 'T' || mesa[pos+(7*i)] === 'C' || mesa[pos+(7*i)] === 'B' || mesa[pos+(7*i)] === 'Q' || mesa[pos+(7*i)] === 'K' || mesa[pos+(7*i)] === 'P'){
+                mesa[pos+(7*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(7*i)] !== ' ' && mesa[pos+7*i] !== peca){
+                  checkEnd = false;
+                }
+              }
+            }
+            counter2++;
+          }
+        }
+        this.setState({
+          mesa,
+          selected: pos
+        })
         return '♝'
       case 'q':
         return '♛'
