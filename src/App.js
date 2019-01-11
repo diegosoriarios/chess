@@ -15,6 +15,16 @@ class App extends Component {
         'P','P','P','P','P','P','P','P',
         'T','C','B','K','Q','B','C','T',
       ],
+      copy: [
+        't','c','b','q','k','b','c','t',
+        'p','p','p','p','p','p','p','p',
+        ' ',' ',' ',' ',' ',' ',' ',' ',
+        ' ',' ',' ',' ',' ',' ',' ',' ',
+        ' ',' ',' ',' ',' ',' ',' ',' ',
+        ' ',' ',' ',' ',' ',' ',' ',' ',
+        'P','P','P','P','P','P','P','P',
+        'T','C','B','K','Q','B','C','T',
+      ],
       selected: '',
       clicked: false,
     }
@@ -23,7 +33,7 @@ class App extends Component {
   move = (peca, pos) => {
     console.log(pos)
     this.setState({
-      clicked: true
+      clicked: true,
     })
     let mesa = this.state.mesa
     switch(peca){
@@ -163,13 +173,16 @@ class App extends Component {
   confirm = (value, i) => {
     console.log(value)
     let mesa = this.state.mesa
+    let copia = this.state.copy
     if(mesa[i] === 'x'){
       mesa[i] = mesa[this.state.selected]
       mesa[this.state.selected] = ' '
+      copia[i] = mesa[i]
+      copia[this.state.selected] = ' '
     }
     this.state.mesa.forEach((value, i) => {
       if(value === 'x'){
-        mesa[i] = ' '
+        mesa[i] = copia[i]
       }
     })
     this.setState({
