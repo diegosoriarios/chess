@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+var i;
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -37,20 +39,45 @@ class App extends Component {
     let mesa = this.state.mesa
     switch(peca){
       case 't':
-        for(var i = pos+1; i < (8 - pos); i++){
-          if(mesa[i] === ' '){
-            mesa[i] = 'x'
-            console.log('primeiro' + i)
-          }else{
-            if(mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
-              mesa[i] = 'x'
-              i = (8-pos)
-              console.log('segundo')
+        let linha = pos % 8;
+        let coluna = Math.floor(pos / 8);
+        let beginLine = linha * coluna;
+        let endLine = (linha * coluna) + 7
+        let checkBegin = true;
+        let checkEnd = true;
+        for(i = 0; i < 8; i++){
+          if(pos-i >= beginLine && checkBegin){
+            if(mesa[pos-i] === ' '){
+              mesa[pos-i] = 'x'
             }else{
-              i = 100;
+              if(mesa[pos-i] === 'T' || mesa[pos-i] === 'C' || mesa[pos-i] === 'B' || mesa[pos-i] === 'Q' || mesa[pos-i] === 'K' || mesa[pos-i] === 'P'){
+                mesa[pos-i] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-i] !== ' ' && mesa[pos-i] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+          }
+          if(pos+i <= endLine && checkEnd){
+            if(mesa[pos+i] === ' '){
+              mesa[pos+i] = 'x'
+            }else{
+              if(mesa[pos+i] === 'T' || mesa[pos+i] === 'C' || mesa[pos+i] === 'B' || mesa[pos+i] === 'Q' || mesa[pos+i] === 'K' || mesa[pos+i] === 'P'){
+                mesa[pos+i] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+i] !== ' ' && mesa[pos-i] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
             }
           }
         }
+        /*
         for(i = pos + 8; i < (64); i += 8){
           console.log(this.state.mesa)
           if(mesa[i] === ' '){
@@ -66,6 +93,7 @@ class App extends Component {
             }
           }
         }
+        */
         this.setState({
           mesa,
           selected: pos
