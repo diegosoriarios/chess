@@ -37,10 +37,18 @@ class App extends Component {
     let mesa = this.state.mesa
     switch(peca){
       case 't':
-        for(var i = 0; i < (8 - pos); i++){
-          if(mesa[i] === ' ' || mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
+        for(var i = pos+1; i < (8 - pos); i++){
+          if(mesa[i] === ' '){
             mesa[i] = 'x'
-            i = (8-pos)
+            console.log('primeiro' + i)
+          }else{
+            if(mesa[i] === 'T' || mesa[i] === 'C' || mesa[i] === 'B' || mesa[i] === 'Q' || mesa[i] === 'K' || mesa[i] === 'P'){
+              mesa[i] = 'x'
+              i = (8-pos)
+              console.log('segundo')
+            }else{
+              i = 100;
+            }
           }
         }
         for(i = pos + 8; i < (64); i += 8){
