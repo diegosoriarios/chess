@@ -38,7 +38,7 @@ class App extends Component {
     })
     let mesa = this.state.mesa
     switch(peca){
-      case 't':
+      case 't': //--------------------------------------------------------------
         let coluna = pos % 8;
         let linha = Math.floor(pos / 8);
         let beginLine = linha * 8;
@@ -120,7 +120,7 @@ class App extends Component {
           selected: pos
         })
         break;
-      case 'c':
+      case 'c': //-----------------------------------------------------
         if(pos % 8 === 7){
           console.log(pos % 8)
           if(this.checkCavaloP(mesa[pos+15]) && pos+15 > 0 && pos+15 < 64){mesa[pos+15] = 'x';}
@@ -170,7 +170,7 @@ class App extends Component {
           selected: pos
         })
         break;
-      case 'b':
+      case 'b': //----------------------------------------------------------
         coluna = pos % 8;
         linha = Math.floor(pos / 8);
         beginLine = linha * 8;
@@ -258,7 +258,7 @@ class App extends Component {
           selected: pos
         })
         break;
-      case 'q':
+      case 'q': //-----------------------------------------------------------------
         coluna = pos % 8;
         linha = Math.floor(pos / 8);
         beginLine = linha * 8;
@@ -422,7 +422,7 @@ class App extends Component {
           selected: pos
         })
         break;
-      case 'k':
+      case 'k': //-------------------------------------------------------------
         if(pos === 56){
           if(mesa[pos+1] === ' ' || mesa[pos+1] === 'T' || mesa[pos+1] === 'C' || mesa[pos+1] === 'B' || mesa[pos+1] === 'Q' || mesa[pos+1] === 'P' || pos+1 > 64){mesa[pos+1] = 'x';}
           if(mesa[pos-8] === ' ' || mesa[pos-8] === 'T' || mesa[pos-8] === 'C' || mesa[pos-8] === 'B' || mesa[pos-8] === 'Q' || mesa[pos-8] === 'P' || pos-8 > 64){mesa[pos-8] = 'x';}
@@ -492,7 +492,7 @@ class App extends Component {
           selected: pos
         })
         break;
-      case 'p':
+      case 'p': //---------------------------------------------------------------
         mesa[pos+8] = 'x';
         mesa[pos+16] = 'x';
         this.setState({
@@ -500,8 +500,88 @@ class App extends Component {
           selected: pos
         })
         break;
-      case 'T':
-        return '♖'
+      case 'T': //---------------------------------------------------------------
+        coluna = pos % 8;
+        linha = Math.floor(pos / 8);
+        beginLine = linha * 8;
+        endLine = beginLine + 7;
+        checkBegin = true;
+        checkEnd = true;
+        //checkHorizontal
+        for(i = 0; i < 8; i++){
+          if(pos-i >= beginLine && checkBegin){
+            if(mesa[pos-i] === ' '){
+              mesa[pos-i] = 'x'
+            }else{
+              if(mesa[pos-i] === 't' || mesa[pos-i] === 'c' || mesa[pos-i] === 'b' || mesa[pos-i] === 'q' || mesa[pos-i] === 'k' || mesa[pos-i] === 'p'){
+                mesa[pos-i] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-i] !== ' ' && mesa[pos-i] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+          }
+          console.log(`Pos+i${pos+i}`)
+          console.log(endLine)
+          if(pos+i <= endLine && checkEnd){
+            if(mesa[pos+i] === ' '){
+              mesa[pos+i] = 'x'
+            }else{
+              if(mesa[pos+i] === 't' || mesa[pos+i] === 'c' || mesa[pos+i] === 'b' || mesa[pos+i] === 'q' || mesa[pos+i] === 'k' || mesa[pos+i] === 'p'){
+                mesa[pos+i] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+i] !== ' ' && mesa[pos+i] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+          }
+        }
+        //checkVertical
+        checkBegin = true;
+        checkEnd = true;
+        for(i = 1; i <= 8; i++){
+          if(pos-(8*i) >= linha && checkBegin){
+            if(mesa[pos-(8*i)] === ' '){
+              mesa[pos-(8*i)] = 'x'
+            }else{
+              if(mesa[pos-(8*i)] === 't' || mesa[pos-(8*i)] === 'c' || mesa[pos-(8*i)] === 'b' || mesa[pos-(8*i)] === 'q' || mesa[pos-(8*i)] === 'k' || mesa[pos-(8*i)] === 'p'){
+                mesa[pos-(8*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(8*i)] !== ' ' && mesa[pos-(8*i)] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+          }
+          if(pos+(8*i) <= 64 && checkEnd){
+            if(mesa[pos+(8*i)] === ' '){
+              mesa[pos+(8*i)] = 'x'
+            }else{
+              if(mesa[pos+(8*i)] === 't' || mesa[pos+(8*i)] === 'c' || mesa[pos+(8*i)] === 'b' || mesa[pos+(8*i)] === 'q' || mesa[pos+(8*i)] === 'k' || mesa[pos+(8*i)] === 'p'){
+                mesa[pos+(8*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(8*i)] !== ' ' && mesa[pos-8*i] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+          }
+        }
+        this.setState({
+          mesa,
+          selected: pos
+        })
+        break;
       case 'C':
         if(this.checkCavaloB(mesa[pos+15]) && pos+15 > 0 && pos+15 < 64){mesa[pos+15] = 'x';}
         if(this.checkCavaloB(mesa[pos+17]) && pos+15 > 0 && pos+17 < 64){mesa[pos+17] = 'x';}
@@ -517,16 +597,333 @@ class App extends Component {
         })
         break;
       case 'B':
-        return '♗'
+        coluna = pos % 8;
+        linha = Math.floor(pos / 8);
+        beginLine = linha * 8;
+        endLine = beginLine + 7;
+        checkBegin = true;
+        checkEnd = true;
+        counter = 0;
+        counter2 = 0;
+        //checkHorizontal
+        console.clear()
+        for(i = 0; i < 8; i++){
+          console.log(coluna)
+          if(counter <= coluna && checkBegin){
+            if(mesa[pos-(9*i)] === ' '){
+              mesa[pos-(9*i)] = 'x'
+            }else{
+              if(mesa[pos-(9*i)] === 't' || mesa[pos-(9*i)] === 'c' || mesa[pos-(9*i)] === 'b' || mesa[pos-(9*i)] === 'q' || mesa[pos-(9*i)] === 'k' || mesa[pos-(9*i)] === 'p'){
+                mesa[pos-(9*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(9*i)] !== ' ' && mesa[pos-(9*i)] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+            counter++;
+          }
+          if(counter2 < (8-coluna) && checkEnd){
+            if(mesa[pos+(9*i)] === ' '){
+              mesa[pos+(9*i)] = 'x'
+            }else{
+              if(mesa[pos+(9*i)] === 't' || mesa[pos+(9*i)] === 'c' || mesa[pos+(9*i)] === 'b' || mesa[pos+(9*i)] === 'q' || mesa[pos+(9*i)] === 'k' || mesa[pos+(9*i)] === 'p'){
+                mesa[pos+(9*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(9*i)] !== ' ' && mesa[pos+(9*i)] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+            counter2++;
+          }
+        }
+        //checkVertical
+        checkBegin = true;
+        checkEnd = true;
+        counter = 0;
+        counter2 = 0;
+        for(i = 1; i <= 8; i++){
+          if(counter < 7-coluna && checkBegin){
+            if(mesa[pos-(7*i)] === ' '){
+              mesa[pos-(7*i)] = 'x'
+            }else{
+              if(mesa[pos-(7*i)] === 't' || mesa[pos-(7*i)] === 'c' || mesa[pos-(7*i)] === 'b' || mesa[pos-(7*i)] === 'q' || mesa[pos-(7*i)] === 'k' || mesa[pos-(7*i)] === 'p'){
+                mesa[pos-(7*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(7*i)] !== ' ' && mesa[pos-(7*i)] !== peca){
+                  checkBegin = false;
+                }
+              }
+            }
+            counter++;
+          }
+          if(counter2 < coluna && checkEnd){
+            if(mesa[pos+(7*i)] === ' '){
+              mesa[pos+(7*i)] = 'x'
+            }else{
+              if(mesa[pos+(7*i)] === 't' || mesa[pos+(7*i)] === 'c' || mesa[pos+(7*i)] === 'b' || mesa[pos+(7*i)] === 'q' || mesa[pos+(7*i)] === 'k' || mesa[pos+(7*i)] === 'p'){
+                mesa[pos+(7*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(7*i)] !== ' ' && mesa[pos+7*i] !== peca){
+                  checkEnd = false;
+                }
+              }
+            }
+            counter2++;
+          }
+        }
+        this.setState({
+          mesa,
+          selected: pos
+        })
+        break;
       case 'Q':
-        return '♕'
+        coluna = pos % 8;
+        linha = Math.floor(pos / 8);
+        beginLine = linha * 8;
+        endLine = beginLine + 7;
+        checkBegin = true;
+        checkEnd = true;
+        //checkHorizontal
+        for(i = 0; i < 8; i++){
+          if(pos-i >= beginLine && checkBegin){
+            if(mesa[pos-i] === ' '){
+              mesa[pos-i] = 'x'
+            }else{
+              if(mesa[pos-i] === 't' || mesa[pos-i] === 'c' || mesa[pos-i] === 'b' || mesa[pos-i] === 'q' || mesa[pos-i] === 'k' || mesa[pos-i] === 'p'){
+                mesa[pos-i] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-i] !== ' ' && mesa[pos-i] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+          }
+          console.log(`Pos+i${pos+i}`)
+          console.log(endLine)
+          if(pos+i <= endLine && checkEnd){
+            if(mesa[pos+i] === ' '){
+              mesa[pos+i] = 'x'
+            }else{
+              if(mesa[pos+i] === 't' || mesa[pos+i] === 'c' || mesa[pos+i] === 'b' || mesa[pos+i] === 'q' || mesa[pos+i] === 'k' || mesa[pos+i] === 'p'){
+                mesa[pos+i] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+i] !== ' ' && mesa[pos+i] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+          }
+        }
+        //checkVertical
+        checkBegin = true;
+        checkEnd = true;
+        for(i = 1; i <= 8; i++){
+          if(pos-(8*i) >= linha && checkBegin){
+            if(mesa[pos-(8*i)] === ' '){
+              mesa[pos-(8*i)] = 'x'
+            }else{
+              if(mesa[pos-(8*i)] === 't' || mesa[pos-(8*i)] === 'c' || mesa[pos-(8*i)] === 'b' || mesa[pos-(8*i)] === 'q' || mesa[pos-(8*i)] === 'k' || mesa[pos-(8*i)] === 'p'){
+                mesa[pos-(8*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(8*i)] !== ' ' && mesa[pos-(8*i)] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+          }
+          if(pos+(8*i) <= 64 && checkEnd){
+            if(mesa[pos+(8*i)] === ' '){
+              mesa[pos+(8*i)] = 'x'
+            }else{
+              if(mesa[pos+(8*i)] === 't' || mesa[pos+(8*i)] === 'c' || mesa[pos+(8*i)] === 'b' || mesa[pos+(8*i)] === 'q' || mesa[pos+(8*i)] === 'k' || mesa[pos+(8*i)] === 'p'){
+                mesa[pos+(8*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(8*i)] !== ' ' && mesa[pos-8*i] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+          }
+        }
+        coluna = pos % 8;
+        linha = Math.floor(pos / 8);
+        beginLine = linha * 8;
+        endLine = beginLine + 7;
+        checkBegin = true;
+        checkEnd = true;
+        counter = 0;
+        counter2 = 0;
+        //checkHorizontal
+        console.clear()
+        for(i = 0; i < 8; i++){
+          console.log(coluna)
+          if(counter <= coluna && checkBegin){
+            if(mesa[pos-(9*i)] === ' '){
+              mesa[pos-(9*i)] = 'x'
+            }else{
+              if(mesa[pos-(9*i)] === 't' || mesa[pos-(9*i)] === 'c' || mesa[pos-(9*i)] === 'b' || mesa[pos-(9*i)] === 'q' || mesa[pos-(9*i)] === 'k' || mesa[pos-(9*i)] === 'p'){
+                mesa[pos-(9*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(9*i)] !== ' ' && mesa[pos-(9*i)] !== peca){
+                  console.log(i)
+                  checkBegin = false;
+                }
+              }
+            }
+            counter++;
+          }
+          if(counter2 < (8-coluna) && checkEnd){
+            if(mesa[pos+(9*i)] === ' '){
+              mesa[pos+(9*i)] = 'x'
+            }else{
+              if(mesa[pos+(9*i)] === 't' || mesa[pos+(9*i)] === 'c' || mesa[pos+(9*i)] === 'b' || mesa[pos+(9*i)] === 'q' || mesa[pos+(9*i)] === 'k' || mesa[pos+(9*i)] === 'p'){
+                mesa[pos+(9*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(9*i)] !== ' ' && mesa[pos+(9*i)] !== peca){
+                  console.log(i)
+                  checkEnd = false;
+                }
+              }
+            }
+            counter2++;
+          }
+        }
+        //checkVertical
+        checkBegin = true;
+        checkEnd = true;
+        counter = 0;
+        counter2 = 0;
+        for(i = 1; i <= 8; i++){
+          if(counter < 7-coluna && checkBegin){
+            if(mesa[pos-(7*i)] === ' '){
+              mesa[pos-(7*i)] = 'x'
+            }else{
+              if(mesa[pos-(7*i)] === 't' || mesa[pos-(7*i)] === 'c' || mesa[pos-(7*i)] === 'b' || mesa[pos-(7*i)] === 'q' || mesa[pos-(7*i)] === 'k' || mesa[pos-(7*i)] === 'p'){
+                mesa[pos-(7*i)] = 'x'
+                checkBegin = false;
+              }else{
+                if(mesa[pos-(7*i)] !== ' ' && mesa[pos-(7*i)] !== peca){
+                  checkBegin = false;
+                }
+              }
+            }
+            counter++;
+          }
+          if(counter2 < coluna && checkEnd){
+            if(mesa[pos+(7*i)] === ' '){
+              mesa[pos+(7*i)] = 'x'
+            }else{
+              if(mesa[pos+(7*i)] === 't' || mesa[pos+(7*i)] === 'c' || mesa[pos+(7*i)] === 'b' || mesa[pos+(7*i)] === 'q' || mesa[pos+(7*i)] === 'k' || mesa[pos+(7*i)] === 'p'){
+                mesa[pos+(7*i)] = 'x'
+                checkEnd = false;
+              }else{
+                if(mesa[pos+(7*i)] !== ' ' && mesa[pos+7*i] !== peca){
+                  checkEnd = false;
+                }
+              }
+            }
+            counter2++;
+          }
+        }
+        this.setState({
+          mesa,
+          selected: pos
+        })
+        break;
       case 'K':
-        return '♔'
+        if(pos === 56){
+          if(mesa[pos+1] === ' ' || mesa[pos+1] === 't' || mesa[pos+1] === 'c' || mesa[pos+1] === 'b' || mesa[pos+1] === 'q' || mesa[pos+1] === 'p' || pos+1 > 64){mesa[pos+1] = 'x';}
+          if(mesa[pos-8] === ' ' || mesa[pos-8] === 't' || mesa[pos-8] === 'c' || mesa[pos-8] === 'b' || mesa[pos-8] === 'q' || mesa[pos-8] === 'p' || pos-8 > 64){mesa[pos-8] = 'x';}
+          if(mesa[pos-7] === ' ' || mesa[pos-7] === 't' || mesa[pos-7] === 'c' || mesa[pos-7] === 'b' || mesa[pos-7] === 'q' || mesa[pos-7] === 'p' || pos-7 > 64){mesa[pos-7] = 'x';}
+        }else{
+          if(pos === 63){
+            if(mesa[pos-9] === ' ' || mesa[pos-9] === 't' || mesa[pos-9] === 'c' || mesa[pos-9] === 'b' || mesa[pos-9] === 'q' || mesa[pos-9] === 'p' || pos-9 > 64){mesa[pos-9] = 'x';}
+            if(mesa[pos-1] === ' ' || mesa[pos-1] === 't' || mesa[pos-1] === 'c' || mesa[pos-1] === 'b' || mesa[pos-1] === 'q' || mesa[pos-1] === 'p' || pos-1 > 64){mesa[pos-1] = 'x';}
+            if(mesa[pos-8] === ' ' || mesa[pos-8] === 't' || mesa[pos-8] === 'c' || mesa[pos-8] === 'b' || mesa[pos-8] === 'q' || mesa[pos-8] === 'p' || pos-8 > 64){mesa[pos-8] = 'x';}
+          }else{
+            if(pos === 0){
+              if(mesa[pos+9] === ' ' || mesa[pos+9] === 't' || mesa[pos+9] === 'c' || mesa[pos+9] === 'b' || mesa[pos+9] === 'q' || mesa[pos+9] === 'p' || pos+9 > 64){mesa[pos+9] = 'x';}
+              if(mesa[pos+1] === ' ' || mesa[pos+1] === 't' || mesa[pos+1] === 'c' || mesa[pos+1] === 'b' || mesa[pos+1] === 'q' || mesa[pos+1] === 'p' || pos+1 > 64){mesa[pos+1] = 'x';}
+              if(mesa[pos+8] === ' ' || mesa[pos+8] === 't' || mesa[pos+8] === 'c' || mesa[pos+8] === 'b' || mesa[pos+8] === 'q' || mesa[pos+8] === 'p' || pos+8 > 64){mesa[pos+8] = 'x';}
+            }else{
+              if(pos === 7){
+                if(mesa[pos+8] === ' ' || mesa[pos+8] === 't' || mesa[pos+8] === 'c' || mesa[pos+8] === 'b' || mesa[pos+8] === 'q' || mesa[pos+8] === 'p' || pos+8 > 64){mesa[pos+8] = 'x';}
+                if(mesa[pos+7] === ' ' || mesa[pos+7] === 't' || mesa[pos+7] === 'c' || mesa[pos+7] === 'b' || mesa[pos+7] === 'q' || mesa[pos+7] === 'p' || pos+7 > 64){mesa[pos+7] = 'x';}
+                if(mesa[pos-1] === ' ' || mesa[pos-1] === 't' || mesa[pos-1] === 'c' || mesa[pos-1] === 'b' || mesa[pos-1] === 'q' || mesa[pos-1] === 'p' || pos-1 > 64){mesa[pos-1] = 'x';}
+              }else{
+                if(pos % 8 === 7){
+                  if(mesa[pos+8] === ' ' || mesa[pos+8] === 't' || mesa[pos+8] === 'c' || mesa[pos+8] === 'b' || mesa[pos+8] === 'q' || mesa[pos+8] === 'p' || pos+8 > 64){mesa[pos+8] = 'x';}
+                  if(mesa[pos+7] === ' ' || mesa[pos+7] === 't' || mesa[pos+7] === 'c' || mesa[pos+7] === 'b' || mesa[pos+7] === 'q' || mesa[pos+7] === 'p' || pos+7 > 64){mesa[pos+7] = 'x';}
+                  if(mesa[pos-9] === ' ' || mesa[pos-9] === 't' || mesa[pos-9] === 'c' || mesa[pos-9] === 'b' || mesa[pos-9] === 'q' || mesa[pos-9] === 'p' || pos-9 > 64){mesa[pos-9] = 'x';}
+                  if(mesa[pos-1] === ' ' || mesa[pos-1] === 't' || mesa[pos-1] === 'c' || mesa[pos-1] === 'b' || mesa[pos-1] === 'q' || mesa[pos-1] === 'p' || pos-1 > 64){mesa[pos-1] = 'x';}
+                  if(mesa[pos-8] === ' ' || mesa[pos-8] === 't' || mesa[pos-8] === 'c' || mesa[pos-8] === 'b' || mesa[pos-8] === 'q' || mesa[pos-8] === 'p' || pos-8 > 64){mesa[pos-8] = 'x';}
+                }else{
+                  if(pos % 8 === 0){
+                    if(mesa[pos+9] === ' ' || mesa[pos+9] === 't' || mesa[pos+9] === 'c' || mesa[pos+9] === 'b' || mesa[pos+9] === 'q' || mesa[pos+9] === 'p' || pos+9 > 64){mesa[pos+9] = 'x';}
+                    if(mesa[pos+1] === ' ' || mesa[pos+1] === 't' || mesa[pos+1] === 'c' || mesa[pos+1] === 'b' || mesa[pos+1] === 'q' || mesa[pos+1] === 'p' || pos+1 > 64){mesa[pos+1] = 'x';}
+                    if(mesa[pos+8] === ' ' || mesa[pos+8] === 't' || mesa[pos+8] === 'c' || mesa[pos+8] === 'b' || mesa[pos+8] === 'q' || mesa[pos+8] === 'p' || pos+8 > 64){mesa[pos+8] = 'x';}
+                    if(mesa[pos-8] === ' ' || mesa[pos-8] === 't' || mesa[pos-8] === 'c' || mesa[pos-8] === 'b' || mesa[pos-8] === 'q' || mesa[pos-8] === 'p' || pos-8 > 64){mesa[pos-8] = 'x';}
+                    if(mesa[pos-7] === ' ' || mesa[pos-7] === 't' || mesa[pos-7] === 'c' || mesa[pos-7] === 'b' || mesa[pos-7] === 'q' || mesa[pos-7] === 'p' || pos-7 > 64){mesa[pos-7] = 'x';}
+                  }else{
+                    if(pos > 56){
+                      if(mesa[pos+1] === ' ' || mesa[pos+1] === 't' || mesa[pos+1] === 'c' || mesa[pos+1] === 'b' || mesa[pos+1] === 'q' || mesa[pos+1] === 'p' || pos+1 > 64){mesa[pos+1] = 'x';}
+                      if(mesa[pos-9] === ' ' || mesa[pos-9] === 't' || mesa[pos-9] === 'c' || mesa[pos-9] === 'b' || mesa[pos-9] === 'q' || mesa[pos-9] === 'p' || pos-9 > 64){mesa[pos-9] = 'x';}
+                      if(mesa[pos-1] === ' ' || mesa[pos-1] === 't' || mesa[pos-1] === 'c' || mesa[pos-1] === 'b' || mesa[pos-1] === 'q' || mesa[pos-1] === 'p' || pos-1 > 64){mesa[pos-1] = 'x';}
+                      if(mesa[pos-8] === ' ' || mesa[pos-8] === 't' || mesa[pos-8] === 'c' || mesa[pos-8] === 'b' || mesa[pos-8] === 'q' || mesa[pos-8] === 'p' || pos-8 > 64){mesa[pos-8] = 'x';}
+                      if(mesa[pos-7] === ' ' || mesa[pos-7] === 't' || mesa[pos-7] === 'c' || mesa[pos-7] === 'b' || mesa[pos-7] === 'q' || mesa[pos-7] === 'p' || pos-7 > 64){mesa[pos-7] = 'x';}
+                    }else{
+                      if(pos < 7){
+                        if(mesa[pos+9] === ' ' || mesa[pos+9] === 't' || mesa[pos+9] === 'c' || mesa[pos+9] === 'b' || mesa[pos+9] === 'q' || mesa[pos+9] === 'p' || pos+9 > 64){mesa[pos+9] = 'x';}
+                        if(mesa[pos+1] === ' ' || mesa[pos+1] === 't' || mesa[pos+1] === 'c' || mesa[pos+1] === 'b' || mesa[pos+1] === 'q' || mesa[pos+1] === 'p' || pos+1 > 64){mesa[pos+1] = 'x';}
+                        if(mesa[pos+8] === ' ' || mesa[pos+8] === 't' || mesa[pos+8] === 'c' || mesa[pos+8] === 'b' || mesa[pos+8] === 'q' || mesa[pos+8] === 'p' || pos+8 > 64){mesa[pos+8] = 'x';}
+                        if(mesa[pos+7] === ' ' || mesa[pos+7] === 't' || mesa[pos+7] === 'c' || mesa[pos+7] === 'b' || mesa[pos+7] === 'q' || mesa[pos+7] === 'p' || pos+7 > 64){mesa[pos+7] = 'x';}
+                        if(mesa[pos-1] === ' ' || mesa[pos-1] === 't' || mesa[pos-1] === 'c' || mesa[pos-1] === 'b' || mesa[pos-1] === 'q' || mesa[pos-1] === 'p' || pos-1 > 64){mesa[pos-1] = 'x';}
+                      }else{
+                        if(mesa[pos+9] === ' ' || mesa[pos+9] === 't' || mesa[pos+9] === 'c' || mesa[pos+9] === 'b' || mesa[pos+9] === 'q' || mesa[pos+9] === 'p' || pos+9 > 64){mesa[pos+9] = 'x';}
+                        if(mesa[pos+1] === ' ' || mesa[pos+1] === 't' || mesa[pos+1] === 'c' || mesa[pos+1] === 'b' || mesa[pos+1] === 'q' || mesa[pos+1] === 'p' || pos+1 > 64){mesa[pos+1] = 'x';}
+                        if(mesa[pos+8] === ' ' || mesa[pos+8] === 't' || mesa[pos+8] === 'c' || mesa[pos+8] === 'b' || mesa[pos+8] === 'q' || mesa[pos+8] === 'p' || pos+8 > 64){mesa[pos+8] = 'x';}
+                        if(mesa[pos+7] === ' ' || mesa[pos+7] === 't' || mesa[pos+7] === 'c' || mesa[pos+7] === 'b' || mesa[pos+7] === 'q' || mesa[pos+7] === 'p' || pos+7 > 64){mesa[pos+7] = 'x';}
+                        if(mesa[pos-9] === ' ' || mesa[pos-9] === 't' || mesa[pos-9] === 'c' || mesa[pos-9] === 'b' || mesa[pos-9] === 'q' || mesa[pos-9] === 'p' || pos-9 > 64){mesa[pos-9] = 'x';}
+                        if(mesa[pos-1] === ' ' || mesa[pos-1] === 't' || mesa[pos-1] === 'c' || mesa[pos-1] === 'b' || mesa[pos-1] === 'q' || mesa[pos-1] === 'p' || pos-1 > 64){mesa[pos-1] = 'x';}
+                        if(mesa[pos-8] === ' ' || mesa[pos-8] === 't' || mesa[pos-8] === 'c' || mesa[pos-8] === 'b' || mesa[pos-8] === 'q' || mesa[pos-8] === 'p' || pos-8 > 64){mesa[pos-8] = 'x';}
+                        if(mesa[pos-7] === ' ' || mesa[pos-7] === 't' || mesa[pos-7] === 'c' || mesa[pos-7] === 'b' || mesa[pos-7] === 'q' || mesa[pos-7] === 'p' || pos-7 > 64){mesa[pos-7] = 'x';}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        this.setState({
+          mesa,
+          selected: pos
+        })
+        break;
       case 'P':
         mesa[pos-8] = 'x';
         mesa[pos-16] = 'x';
         this.setState({
-          mesa
+          mesa,
+          selected: pos
         })
         break;
       default:
